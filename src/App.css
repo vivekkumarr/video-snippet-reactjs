@@ -1,0 +1,194 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.max-width-1024 { 
+  max-width: 1024px; 
+  margin: 0 auto; 
+}
+
+.size
+{
+    font-size: 80px;
+    font-weight: bold;
+}
+
+.sizePar
+{
+    font-size: 21px;
+}
+
+.input-size
+{
+    width: 355px;
+    float: left;
+}
+
+.button-size
+{
+    width: 95px;
+    float: none;
+    height: 33px;
+}
+
+.padding
+{
+    padding-top: 11px;
+}
+
+
+.video-image-size
+{
+	width:250px;
+	height:auto;
+}
+
+.center
+{
+    text-align: center;
+    padding-top: 25px;
+}
+
+.button-rule
+{
+    font-style: normal;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.button-widht
+{
+    width: 116px;
+}
+
+.allontana
+{
+    margin-bottom: 30px;
+    margin-top:50px;
+    margin-right:15px;
+}
+
+.separa{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.bordered{
+    border: 1px solid black;
+}
+
+.carousel-inner img{
+    margin: 0 auto;
+}
+
+.navbar-brand{
+    font-size: 20pt;
+    font-style: bold;
+}
+
+hr { 
+    display: block; 
+    height: 1px;
+    border: 0; 
+    border-top: 1px solid orange;
+    margin: 1em 0; padding: 0; 
+}
+
+.progress {
+    border-radius: 0px; 
+    height: 10px;
+}
+
+.progress-bar-warning{
+    background: #ffffff;
+}
+
+.video-image-size-onWatch{
+    width:150px;
+    height:auto;
+}
+
+#showcase {
+    margin: 0 20px;
+    text-align: center;
+}
+
+#range .noUi-connect {
+    background: #80C9F5;
+    box-shadow: inset 0 0 5px rgba(20,20,20,0.65);
+}
+
+#value-span,
+#value-input {
+    width: 30%;
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+}
+
+#controls {
+  width: 640px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#controls button, #download button {
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  background: #ffffff;
+  margin: 0 10px;
+  background: #cccccc;
+}
+
+#download button {
+  margin: 2% 50%;
+  width: 150px;
+  background: #1d45d8;
+  color: #ffffff;
+}
+
+.disableActive {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+h1 {
+  margin: 0 20%;
+  padding: 2% 0;
+}
