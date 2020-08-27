@@ -21,7 +21,7 @@ class NewSnippetComponent extends React.PureComponent {
       workerClient.on("onDone", result => {
         this.updateStdOutputText("Command Completed");
         const videoBlob = this.arrayBufferToBlob(result[0].data);
-        var url = URL.createObjectURL(videoBlob);
+        const url = URL.createObjectURL(videoBlob);
 	      this.download(url);
       });
   }
@@ -42,21 +42,23 @@ class NewSnippetComponent extends React.PureComponent {
       this.isDownloadClick = false;
       this.setRangeSlider();
       this.checkDomainAndStop();
-    }, 1000);
+    }, 1500);
   }
-
+  /**
+   * Download Video Snippet
+   */
   downloadSnippet = async () => {
     this.isDownloadClick = true;
     this.setState({
       disableClass: 'disableActive'
     });
     this.pauseVideo();
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:3000/videofile1.mp4', true);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:3000/videofile.mp4', true);
     xhr.responseType = 'blob';
-    var self = this;
+    const self = this;
     xhr.onload = async function() {
-      var blob = await this.response;
+      const blob = await this.response;
       self.trimVideo(blob);
     }
    
@@ -65,8 +67,8 @@ class NewSnippetComponent extends React.PureComponent {
 
   trimVideo = (blob) => { 
     workerClient.inputFile = blob;
-    var start = this.fromOld ? this.fromOld-1 : this.fromOld;
-    var length = this.toOld - this.fromOld;
+    let start = this.fromOld ? this.fromOld : this.fromOld;
+    let length = this.toOld - this.fromOld;
     workerClient.runCommand(
       `-ss ${start} -c copy -t ${length} sliced-output.mp4`
     );
@@ -82,7 +84,7 @@ class NewSnippetComponent extends React.PureComponent {
     this.setState({disableClass: ''});
     this.isDownloadClick = false;
   }
-
+  
   rewindVideo() {
     this.myVideoRef.current.seekTo(this.fromOld, true);
     this.playVideo();
@@ -96,19 +98,19 @@ class NewSnippetComponent extends React.PureComponent {
   }
 
   pauseVideo() {
-    this.setState((prevState)=>({
+    this.setState({
       playing: false
-    }));
+    });
   }
 
   playVideo() {
-    this.setState((prevState)=>({
+    this.setState({
       playing: true
-    }));
+    });
   }
 
   backwardVideo() {
-    var curTime = this.myVideoRef.current.getCurrentTime();
+    let curTime = this.myVideoRef.current.getCurrentTime();
     curTime -= 5;
     if (curTime < this.fromOld) {
       this.myVideoRef.current.seekTo(this.fromOld, true);
@@ -119,7 +121,7 @@ class NewSnippetComponent extends React.PureComponent {
   }
 
   forwardVideo() {
-    var curTime = this.myVideoRef.current.getCurrentTime();
+    let curTime = this.myVideoRef.current.getCurrentTime();
 
     curTime += 5;
     if (curTime > this.toOld) {
@@ -146,22 +148,24 @@ class NewSnippetComponent extends React.PureComponent {
         }
       });
 
+      let readValue;
+
       // When the slider value changes, update the input and span
       this.slider.noUiSlider.on('update', (values, handle) => {
         if (handle) {
-          this.readValue = values[handle] | 0;
+          readValue = values[handle] | 0;
           document.getElementById('value-span').innerHTML = this.toHHMMSS(values[handle]);
-          if (this.toOld !== this.readValue) {
-            this.toOld = this.readValue;
+          if (this.toOld !== readValue) {
+            this.toOld = readValue;
           }
 
         } else {
-          this.readValue = values[handle] | 0;
+          readValue = values[handle] | 0;
           document.getElementById('value-input').innerHTML = this.toHHMMSS(values[handle]);
 
-          if (this.fromOld !== this.readValue) {
-            this.fromOld = this.readValue;
-            this.myVideoRef.current.seekTo(this.readValue, true);
+          if (this.fromOld !== readValue) {
+            this.fromOld = readValue;
+            this.myVideoRef.current.seekTo(readValue, true);
             this.pauseVideo();
             this.playVideo();
           }
@@ -176,12 +180,12 @@ class NewSnippetComponent extends React.PureComponent {
   }
 
   checkDomainAndStop = () => {
-    var curTime = this.myVideoRef.current.getCurrentTime();
+    const curTime = this.myVideoRef.current.getCurrentTime();
 
     if (curTime < 0) {
       this.myVideoRef.current.seekTo(0, true);
     }
-    if (curTime > this.toOld && this.toOld !== Math.floor(this.myVideoRef.current.getDuration())) {
+    if (curTime > this.toOld && this.toOld !== Math.floor(curTime)) {
       this.myVideoRef.current.seekTo(this.toOld, true);
       this.pauseVideo();
     }
@@ -191,31 +195,32 @@ class NewSnippetComponent extends React.PureComponent {
   }
 
   toHHMMSS(val) {
-    this.sec_num = parseInt(val, 10);
-    this.hours = Math.floor(this.sec_num / 3600);
-    this.minutes = Math.floor((this.sec_num - (this.hours * 3600)) / 60);
-    this.seconds = this.sec_num - (this.hours * 3600) - (this.minutes * 60);
+    const sec_num = parseInt(val, 10);
+    let hours = Math.floor(sec_num / 3600);
+    let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    let seconds = sec_num - (hours * 3600) - (minutes * 60);
+    let time='';
 
-    if (this.hours < 10) { this.hours = "0" + this.hours; }
-    if (this.minutes < 10) { this.minutes = "0" + this.minutes; }
-    if (this.seconds < 10) { this.seconds = "0" + this.seconds; }
+    if (hours < 10) { hours = "0" + hours; }
+    if (minutes < 10) { minutes = "0" + minutes; }
+    if (seconds < 10) { seconds = "0" + seconds; }
 
     // only mm:ss
-    if (this.hours === "00") {
-      this.time = this.minutes + ':' + this.seconds;
+    if (hours === "00") {
+      time = minutes + ':' + seconds;
     }
     else {
-      this.time = this.hours + ':' + this.minutes + ':' + this.seconds;
+      time = hours + ':' + minutes + ':' + seconds;
     }
 
-    return this.time;
+    return time;
   }
 
   render() {
     return (
       <div>
         <div className={'max-width-1024 ' + this.state.disableClass}>
-          <ReactPlayer url='videofile1.mp4' playing={this.state.playing} controls={true} ref={this.myVideoRef} />
+          <ReactPlayer url='videofile.mp4' playing={this.state.playing} controls={true} ref={this.myVideoRef} />
 
           <div id="controls">
               <button onClick={() => this.rewindVideo()}>Refresh</button>
